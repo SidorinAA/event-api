@@ -1,0 +1,27 @@
+# Datasource configuration
+spring:
+  application:
+    name: event_api
+  mail:
+    host: smtp.yandex.ru
+    port: 465
+    protocol: smtp
+    username: qwerty
+    password: qwerty
+  datasource:
+    url: jdbc:postgresql://localhost:5432/event
+    username: aleksei
+    password: postgres
+    hikari:
+      connection-timeout: 10000
+  jpa:
+    generate-ddl: false
+    open-in-view: false
+
+  # Liquibase configuration
+  liquibase:
+    change-log: classpath:db/changelog-master.xml
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/event
+    user: aleksei
+    password: postgres
