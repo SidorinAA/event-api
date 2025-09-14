@@ -29,7 +29,7 @@ public class Organization extends BaseEntity {
     private Set<Event> events = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
     public void addEvent(Event event) {

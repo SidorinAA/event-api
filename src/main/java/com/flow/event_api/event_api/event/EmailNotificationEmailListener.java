@@ -16,7 +16,7 @@ public class EmailNotificationEmailListener {
     @EventListener(EmailNotificationEvent.class)
     public void onEvent(EmailNotificationEvent event) {
         log.info("Email notification event received: {}", event);
-        subscriptionService.sendNotification(
+        subscriptionService.sendNotifications(
                 event.getOrganization(),
                 event.getCategories(),
                 event.getEventName()

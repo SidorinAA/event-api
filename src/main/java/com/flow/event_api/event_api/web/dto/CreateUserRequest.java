@@ -16,7 +16,7 @@ public class CreateUserRequest {
 
     @NotBlank(message = "Username must be set")
     @Size(min = 3, max = 24, message = "Username min size is {min}; max size is {max}")
-    private String name;
+    private String username;
 
     @NotBlank(message = "Email must be set")
     @Email(message = "Invalid email address")

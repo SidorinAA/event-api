@@ -11,6 +11,7 @@ import com.flow.event_api.event_api.repository.LocationRepository;
 import com.flow.event_api.event_api.repository.ScheduleRepository;
 import com.flow.event_api.event_api.repository.specification.EventSpecification;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -82,26 +83,28 @@ public class EventService {
     public Event update(Long eventId, Event eventForUpdate) {
         var currentEvent = getById(eventId);
 
-        if (eventForUpdate.getName() != null && !Objects.equals(eventForUpdate.getName(), currentEvent.getName())) {
+        if (eventForUpdate.getName() != null &&
+            !Objects.equals(eventForUpdate.getName(), currentEvent.getName())) {
             currentEvent.setName(eventForUpdate.getName());
         }
-
-        if (eventForUpdate.getStartTime() != null && !Objects.equals(eventForUpdate.getStartTime(), currentEvent.getStartTime())) {
+        if (eventForUpdate.getStartTime() != null &&
+            !Objects.equals(eventForUpdate.getStartTime(), currentEvent.getEndTime())) {
             currentEvent.setStartTime(eventForUpdate.getStartTime());
         }
-
-        if (eventForUpdate.getEndTime() != null && !Objects.equals(eventForUpdate.getEndTime(), currentEvent.getEndTime())) {
+        if (eventForUpdate.getEndTime() != null &&
+            !Objects.equals(eventForUpdate.getEndTime(), currentEvent.getEndTime())) {
             currentEvent.setEndTime(eventForUpdate.getEndTime());
         }
 
         var currentSchedule = currentEvent.getSchedule();
         var updatedSchedule = eventForUpdate.getSchedule();
-        if (updatedSchedule != null && ObjectUtils.nullSafeEquals(currentSchedule.getDescription(), updatedSchedule.getDescription())) {
+        if (updatedSchedule != null && StringUtils.isNoneBlank(updatedSchedule.getDescription()) &&
+            !Objects.equals(currentSchedule.getDescription(), updatedSchedule.getDescription())) {
             currentSchedule.setDescription(updatedSchedule.getDescription());
         }
 
         if (!CollectionUtils.isEmpty(eventForUpdate.getCategories())) {
-            currentEvent.setCategories(categoryService.upsertCategories(currentEvent.getCategories()));
+            currentEvent.setCategories(categoryService.upsertCategories(eventForUpdate.getCategories()));
         }
 
         return eventRepository.save(currentEvent);
